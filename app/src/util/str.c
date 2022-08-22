@@ -240,7 +240,7 @@ sc_str_wrap_lines(const char *input, unsigned columns, unsigned indent) {
 
     APPEND_INDENT();
 
-    // The last separator encountered, it must be inserted only conditionnaly,
+    // The last separator encountered, it must be inserted only conditionally,
     // depending on the next token
     char pending = 0;
 
@@ -295,14 +295,6 @@ sc_str_wrap_lines(const char *input, unsigned columns, unsigned indent) {
 error:
     free(buf.s);
     return NULL;
-}
-
-size_t
-sc_str_truncate(char *data, size_t len, const char *endchars) {
-    data[len - 1] = '\0';
-    size_t idx = strcspn(data, endchars);
-    data[idx] = '\0';
-    return idx;
 }
 
 ssize_t

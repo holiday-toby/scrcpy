@@ -12,10 +12,8 @@
 # include <winsock2.h>
 # include <windows.h>
 # define SC_PRIexitcode "lu"
-// <https://stackoverflow.com/a/44383330/1987178>
-# define SC_PRIsizet "Iu"
 # define SC_PROCESS_NONE NULL
-# define SC_EXIT_CODE_NONE -1u // max value as unsigned
+# define SC_EXIT_CODE_NONE -1UL // max value as unsigned long
   typedef HANDLE sc_pid;
   typedef DWORD sc_exit_code;
   typedef HANDLE sc_pipe;
@@ -23,7 +21,6 @@
 #else
 
 # include <sys/types.h>
-# define SC_PRIsizet "zu"
 # define SC_PRIexitcode "d"
 # define SC_PROCESS_NONE -1
 # define SC_EXIT_CODE_NONE -1

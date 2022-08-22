@@ -119,6 +119,13 @@ sc_process_execute_p(const char *const argv[], sc_pid *pid, unsigned flags,
 
         close(internal[0]);
         enum sc_process_result err;
+
+        // Somehow SDL masks many signals - undo them for other processes
+        // https://github.com/libsdl-org/SDL/blob/release-2.0.18/src/thread/pthread/SDL_systhread.c#L167
+        sigset_t mask;
+        sigemptyset(&mask);
+        sigprocmask(SIG_SETMASK, &mask, NULL);
+
         if (fcntl(internal[1], F_SETFD, FD_CLOEXEC) == 0) {
             execvp(argv[0], (char *const *) argv);
             perror("exec");
@@ -169,7 +176,7 @@ sc_process_execute_p(const char *const argv[], sc_pid *pid, unsigned flags,
 bool
 sc_process_terminate(pid_t pid) {
     if (pid <= 0) {
-        LOGC("Requested to kill %d, this is an error. Please report the bug.\n",
+        LOGE("Requested to kill %d, this is an error. Please report the bug.\n",
              (int) pid);
         abort();
     }
